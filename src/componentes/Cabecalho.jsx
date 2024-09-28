@@ -7,12 +7,8 @@ export default function Cabecalho(props) {
 
   if (props.status == true) {
     componente = (
-      <div className="sair">
-        <img
-          className="icone"
-          src="/img/box-arrow-left.svg"
-          onClick={Deslogar}
-        />
+      <div className="sair" onClick={Deslogar}>
+        <img className="icone" src="/img/box-arrow-left.svg" />
         <span>Sair</span>
       </div>
     );

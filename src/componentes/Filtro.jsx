@@ -65,9 +65,12 @@ export default function Filtro(props) {
                 </li>
               </ul>
             </div>
-            <div className="div_aplicar">
-              <button className="aplicar" onClick={props.Fechar}>
+            <div class="grupo_botoes">
+              <button className="botao_destaque" onClick={props.Fechar}>
                 Aplicar
+              </button>
+              <button className="botao_branco" onClick={props.Fechar}>
+                Limpar
               </button>
             </div>
           </div>

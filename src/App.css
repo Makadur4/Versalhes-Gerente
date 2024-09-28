@@ -1,3 +1,37 @@
+.grupo_botoes
+{
+    display: flex;
+    gap: 10px;
+    width: 100%;
+    justify-content: center;
+}
+
+.botao_destaque{
+    color:#ffffff;
+    background-color: var(--cor-destaque);
+    height: 30px;
+    border-radius: 5px;
+    border: solid;
+    border-width: 1px;
+    width: 80px; 
+    font-size: 15px;
+}
+
+.botao_branco{
+    background-color: #ffffff;
+    height: 30px;
+    border-radius: 5px;
+    border: solid;
+    border-width: 1px;
+    width: 80px; 
+    font-size: 15px;
+}
+
+
+button{
+    cursor: pointer;
+}
+
 .div_aplicar{
     height: 100%;
 }
@@ -9,15 +43,6 @@
     background-color:#0013C1;
     color: #ffffff;
     width: 100px;
-}
-
-.div_filtro1{
-    display: flex;
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    justify-content: right;
-
 }
 
 .campo_estoque{
@@ -53,8 +78,12 @@
 }
 
 .card_excluir{
-    position: fixed;
-    top: 20%;
+    position: absolute;
+    
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
     width: 550px;
     height: 200px;
     padding-left: 20px;
@@ -226,8 +255,10 @@ textarea::placeholder{
 }
 
 .card_detalhe {
-    position: fixed;
-    top: 10%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     width: 900px;
     height: 560px;
     padding-left: 20px;
@@ -245,6 +276,10 @@ textarea::placeholder{
     justify-content: center;
     align-items: center;
     gap: 8px;
+}
+
+.opcao_tabela img{
+    cursor: pointer;
 }
 
 .tabela{
@@ -354,9 +389,11 @@ td.preco
     font-size: 24px;
     font-family: Arial, Helvetica, sans-serif;
     color: #ffffff;
+    cursor: pointer;
 }
 
 main{
+    flex: 1;
     display: flex;
     align-items: center;
     flex-direction: column;
@@ -408,13 +445,19 @@ main{
 
 }
 
+.div_filtro1{
+    display: flex;
+    width: 100%;
+    position: absolute;
+    justify-content: right;
+    z-index: 20;
+}
+
 .div_filtro2{
     background-color: #ffffff;
-    min-width: 240px;
+    width: 240px;
     height: 600px;
-    margin-left: 10px;
-    z-index: 20;
-
+    margin-right: 20px;
 }
 
 .ajuste_carrinho{
@@ -544,6 +587,10 @@ main{
     margin-bottom: 20px;
 }
 
+.botao_continuar
+{
+    padding: 20px;
+}
 
 .botao_continuar button{
     background-color: #0013C1;
@@ -559,10 +606,18 @@ main{
 
 
 .login{
+    flex:1;
     font-family: Arial, Helvetica, sans-serif;
     display: flex;
     align-items: center;
     flex-direction: column;
+    justify-content: center;
+}
+
+.foto_perfil
+{
+    text-align: center;
+    padding: 20px;
 }
 
 .foto_perfil img{
@@ -736,12 +791,20 @@ h1 img{
 
 
 body {
-    border-style: solid;
-    border-width: 20px;
-    border-color: var(--cor-borda);
+    
     margin: 0;
     padding: 0;
+}
+
+#root
+{
+    min-height: 100vh;
+    box-sizing: border-box;
+    border: solid 20px var(--cor-borda);
     background-color: var(--cor-fundo);
+    display: flex;
+    flex-direction: column;
+
 }
 
 header {

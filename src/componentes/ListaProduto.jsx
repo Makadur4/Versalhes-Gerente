@@ -101,7 +101,10 @@ export default function ListaProduto() {
               <th>Opções</th>
             </tr>
           </thead>
-          <tbody>{listaComponentes}</tbody>
+          <tbody>
+            {listaComponentes}
+            {listaComponentes}
+          </tbody>
         </table>
       </div>
       {componente}
