@@ -6,7 +6,7 @@ export default function AdicionarProduto(props) {
         <h1>Novo Produto</h1>
         <div className="campo_produto">
           <div className="quadro_foto">
-            <img src="/img/card-image.svg"></img>
+            <img src="/svg/icone_imagem.svg"></img>
           </div>
           <div className="cadastro_produto">
             <label className="label_produto" htmlFor="nome_produto">

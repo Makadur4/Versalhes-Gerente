@@ -11,8 +11,9 @@ export default function EstoqueProduto(props) {
           <input
             className="input_estoque"
             id="estoque"
-            type="text"
+            type="number"
             placeholder="100"
+            min="0"
           ></input>
         </div>
         <div className="campo_estoque">

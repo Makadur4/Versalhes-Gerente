@@ -1,7 +1,7 @@
 import { useState } from "react";
 import "./App.css";
 import Cabecalho from "./componentes/Cabecalho";
-import ListaProduto from "./componentes/ListaProduto";
+import ListaProdutos from "./componentes/ListaProdutos";
 import Login from "./componentes/Login";
 import Rodape from "./componentes/Rodape";
 
@@ -11,7 +11,7 @@ function App() {
   let componente;
 
   if (logado == true) {
-    componente = <ListaProduto />;
+    componente = <ListaProdutos />;
   } else {
     componente = <Login setStatue={setLogado} />;
   }

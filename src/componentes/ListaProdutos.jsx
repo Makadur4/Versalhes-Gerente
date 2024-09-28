@@ -6,7 +6,7 @@ import ExcluirProduto from "./ExcluirProduto";
 import EstoqueProduto from "./EstoqueProduto";
 import Filtro from "./Filtro";
 
-export default function ListaProduto() {
+export default function ListaProdutos() {
   const [visivel, setVisivel] = useState(0);
 
   let componente;
@@ -65,9 +65,9 @@ export default function ListaProduto() {
         <td className="preco">{item.Preconormal}</td>
         <td>
           <div className="opcao_tabela">
-            <img src="/img/alterar.svg" onClick={Abrir2}></img>
-            <img src="/img/excluir.svg" onClick={Abrir3}></img>
-            <img src="/img/estoque.svg" onClick={Abrir4}></img>
+            <img src="/svg/icone_alterar.svg" onClick={Abrir2}></img>
+            <img src="/svg/icone_excluir.svg" onClick={Abrir3}></img>
+            <img src="/svg/icone_estoque.svg" onClick={Abrir4}></img>
           </div>
         </td>
       </tr>
@@ -83,6 +83,7 @@ export default function ListaProduto() {
             placeholder=" Digite o texto para pesquisa..."
           ></input>
           <button>Pesquisar</button>
+          <button>Limpar</button>
           <button onClick={Abrir5}>Filtros</button>
         </div>
         <div className="funcao2">

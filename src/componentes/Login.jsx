@@ -1,4 +1,4 @@
-export default function (props) {
+export default function Login(props) {
   function Logar() {
     props.setStatue(true);
   }
@@ -7,7 +7,7 @@ export default function (props) {
     <main className="login">
       <div>
         <div className="foto_perfil">
-          <img src="/img/person-circle.svg" />
+          <img src="/svg/icone_perfil_azul.svg" />
         </div>
         <label className="label" htmlFor="email">
           E-mail:
