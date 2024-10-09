@@ -1,53 +1,76 @@
-import { useState } from "react";
-import Dados from "../dados/produtos";
-import AdicionarProduto from "./AdicionarProduto";
-import AlterarProduto from "./AlterarProduto";
+import { useEffect, useState } from "react";
+import ManterProduto from "./ManterProduto";
 import ExcluirProduto from "./ExcluirProduto";
 import EstoqueProduto from "./EstoqueProduto";
 import Filtro from "./Filtro";
+import axios from "axios";
 
 export default function ListaProdutos() {
   const [visivel, setVisivel] = useState(0);
+  const [idPerfume, setIdPerfume] = useState(0);
+  const [lista, setLista] = useState([]);
+  const [atualizar, setAAtualizar] = useState(true);
+
+  function CarrergarListaProdutos() {
+    axios
+      .get(`http://localhost:8080/perfume`)
+      .then(function (response) {
+        setLista(response.data);
+      })
+      .catch(function (erro) {
+        alert("Não foi possível executar operação!");
+        console.log(erro);
+      });
+  }
+
+  useEffect(CarrergarListaProdutos, [atualizar]);
 
   let componente;
 
   if (visivel == 1) {
-    componente = <AdicionarProduto Fechar={Fechar} />;
+    componente = <ManterProduto Fechar={Fechar} IdPerfume={idPerfume} />;
   }
 
   if (visivel == 2) {
-    componente = <AlterarProduto Fechar={Fechar} />;
+    componente = <ManterProduto Fechar={Fechar} IdPerfume={idPerfume} />;
   }
 
   if (visivel == 3) {
-    componente = <ExcluirProduto Fechar={Fechar} />;
+    componente = <ExcluirProduto Fechar={Fechar} IdPerfume={idPerfume} />;
   }
 
   if (visivel == 4) {
-    componente = <EstoqueProduto Fechar={Fechar} />;
+    componente = <EstoqueProduto Fechar={Fechar} IdPerfume={idPerfume} />;
   }
 
   if (visivel == 5) {
     componente = <Filtro Fechar={Fechar} />;
   }
 
-  function Fechar() {
+  function Fechar(atualizar) {
     setVisivel(0);
+    if (atualizar == true) {
+      setAAtualizar((prevStatus) => !prevStatus);
+    }
   }
 
   function Abrir1() {
+    setIdPerfume(0);
     setVisivel(1);
   }
 
-  function Abrir2() {
+  function Abrir2(id) {
+    setIdPerfume(id);
     setVisivel(2);
   }
 
-  function Abrir3() {
+  function Abrir3(id) {
+    setIdPerfume(id);
     setVisivel(3);
   }
 
-  function Abrir4() {
+  function Abrir4(id) {
+    setIdPerfume(id);
     setVisivel(4);
   }
 
@@ -55,19 +78,28 @@ export default function ListaProdutos() {
     setVisivel(5);
   }
 
-  const listaComponentes = Dados.map(function (item) {
+  const listaComponentes = lista.map(function (item) {
     return (
-      <tr>
-        <td>{item.Nome}</td>
-        <td>{item.Marca}</td>
-        <td>{item.Tipo}</td>
-        <td className="estoque">{item.Estoque}</td>
-        <td className="preco">{item.Preconormal}</td>
+      <tr key={item.idPerfume}>
+        <td>{item.nome}</td>
+        <td>{item.marca.nome}</td>
+        <td>{item.tipo.tipo}</td>
+        <td className="estoque">{item.estoque}</td>
+        <td className="preco">{item.precoNormal}</td>
         <td>
           <div className="opcao_tabela">
-            <img src="/svg/icone_alterar.svg" onClick={Abrir2}></img>
-            <img src="/svg/icone_excluir.svg" onClick={Abrir3}></img>
-            <img src="/svg/icone_estoque.svg" onClick={Abrir4}></img>
+            <img
+              src="/svg/icone_alterar.svg"
+              onClick={(e) => Abrir2(item.idPerfume)}
+            ></img>
+            <img
+              src="/svg/icone_excluir.svg"
+              onClick={(e) => Abrir3(item.idPerfume)}
+            ></img>
+            <img
+              src="/svg/icone_estoque.svg"
+              onClick={(e) => Abrir4(item.idPerfume)}
+            ></img>
           </div>
         </td>
       </tr>
@@ -102,10 +134,7 @@ export default function ListaProdutos() {
               <th>Opções</th>
             </tr>
           </thead>
-          <tbody>
-            {listaComponentes}
-            {listaComponentes}
-          </tbody>
+          <tbody>{listaComponentes}</tbody>
         </table>
       </div>
       {componente}
