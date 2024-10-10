@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Marcas from "../dados/marcas";
 import Tipos from "../dados/tipos";
 import axios from "axios";
+import Imagem from "./Imagem";
 
 export default function ManterProduto(props) {
   const [marcas, setMarcas] = useState([]);
@@ -17,6 +18,9 @@ export default function ManterProduto(props) {
   const [precoNormal, setPrecoNormal] = useState("0");
   const [precoOferta, setPrecoOferta] = useState("0");
   const [estoque, setEstoque] = useState("0");
+
+  const [urlImagem, setUrlImagem] = useState("/img/icone_imagem.png");
+  const [arquivoImagem, setArquivoImagem] = useState(null);
 
   let titulo;
 
@@ -70,6 +74,8 @@ export default function ManterProduto(props) {
           setPrecoNormal(perfume.precoNormal);
           setPrecoOferta(perfume.precoOferta);
           setEstoque(perfume.estoque);
+
+          setUrlImagem(`http://localhost:8080/imagem/${props.IdPerfume}`);
         })
         .catch(function (erro) {
           alert("Não foi possível executar operação!");
@@ -102,25 +108,47 @@ export default function ManterProduto(props) {
       estoque: estoque,
     };
 
+    let idPerfume = props.IdPerfume;
+
     if (props.IdPerfume == 0) {
       axios
         .post("http://localhost:8080/perfume", dados)
-        .then(function () {
-          props.Fechar(true);
+        .then(function (response) {
+          idPerfume = response.data.idPerfume;
+          GravarImagem(idPerfume);
         })
         .catch(function (erro) {
           alert("Não foi possível executar operação!");
+          return;
         });
     } else {
       axios
         .put("http://localhost:8080/perfume", dados)
         .then(function () {
-          props.Fechar(true);
+          GravarImagem(idPerfume);
         })
         .catch(function (erro) {
           alert("Não foi possível executar operação!");
+          return;
         });
     }
+  }
+
+  function GravarImagem(idPerfume) {
+    if (arquivoImagem != null) {
+      const formulario = new FormData();
+
+      formulario.append("arquivo", arquivoImagem);
+
+      axios
+        .post(`http://localhost:8080/imagem/${idPerfume}`, formulario)
+        .then(function () {})
+        .catch(function (erro) {
+          alert("Não foi possível executar operação!");
+          return;
+        });
+    }
+    props.Fechar(true);
   }
 
   return (
@@ -131,7 +159,11 @@ export default function ManterProduto(props) {
         <form onSubmit={Conrimar}>
           <div className="campo_produto">
             <div className="quadro_foto">
-              <img src="/svg/icone_imagem.svg"></img>
+              <Imagem
+                UrlImagem={urlImagem}
+                SetUrlImagem={setUrlImagem}
+                SetArquivoImagem={setArquivoImagem}
+              />
             </div>
             <div className="cadastro_produto">
               <label className="label_produto" htmlFor="nome">

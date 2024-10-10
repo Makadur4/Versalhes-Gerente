@@ -230,7 +230,12 @@ textarea::placeholder{
 }
 
 .quadro_foto img{
-    height: 40px;
+    height: 180px;
+    cursor: pointer;
+}
+
+.quadro_foto input{
+    display: none;
 }
 
 .quadro_foto{
