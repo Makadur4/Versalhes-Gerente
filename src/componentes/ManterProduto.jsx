@@ -32,10 +32,12 @@ export default function ManterProduto(props) {
 
   function CarrergarListaMarcas() {
     setMarcas(Marcas);
+    setMarca(Marcas[0].idMarca);
   }
 
   function CarrergarListaTipos() {
     setTipos(Tipos);
+    setTipo(Tipos[0].idTipo);
   }
 
   const listaMarcas = marcas.map(function (item) {
@@ -71,15 +73,24 @@ export default function ManterProduto(props) {
           setEspecial(perfume.especial);
           setOferta(perfume.oferta);
           setDescricao(perfume.descricao);
-          setPrecoNormal(perfume.precoNormal);
-          setPrecoOferta(perfume.precoOferta);
+          setPrecoNormal(
+            perfume.precoNormal.toLocaleString("en-US", {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+            })
+          );
+          setPrecoOferta(
+            perfume.precoOferta.toLocaleString("en-US", {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+            })
+          );
           setEstoque(perfume.estoque);
 
           setUrlImagem(`http://localhost:8080/imagem/${props.IdPerfume}`);
         })
         .catch(function (erro) {
           alert("Não foi possível executar operação!");
-          console.log(erro);
           props.Fechar(false);
         });
     }
@@ -87,8 +98,23 @@ export default function ManterProduto(props) {
 
   useEffect(CarregarDadosProduto, []);
 
-  function Conrimar(e) {
+  function Confirmar(e) {
     e.preventDefault();
+
+    if (props.IdPerfume == 0 && arquivoImagem == null) {
+      alert("Por favor, selecionar uma imagem!");
+      return;
+    }
+
+    if (nome == "") {
+      alert("Por favor, informe o nome do perfume!");
+      return;
+    }
+
+    if (descricao == "") {
+      alert("Por favor, informe a descrição do perfume!");
+      return;
+    }
 
     const dados = {
       idPerfume: props.IdPerfume,
@@ -119,6 +145,7 @@ export default function ManterProduto(props) {
         })
         .catch(function (erro) {
           alert("Não foi possível executar operação!");
+          console.log(erro);
           return;
         });
     } else {
@@ -145,9 +172,11 @@ export default function ManterProduto(props) {
         .then(function () {})
         .catch(function (erro) {
           alert("Não foi possível executar operação!");
+          console.log(erro);
           return;
         });
     }
+
     props.Fechar(true);
   }
 
@@ -156,7 +185,7 @@ export default function ManterProduto(props) {
       <div className="overlay"></div>
       <div className="card_detalhe">
         <h1>{titulo}</h1>
-        <form onSubmit={Conrimar}>
+        <form onSubmit={Confirmar}>
           <div className="campo_produto">
             <div className="quadro_foto">
               <Imagem
@@ -264,6 +293,7 @@ export default function ManterProduto(props) {
                   id="precoNormal"
                   className="input_condicao"
                   type="number"
+                  step="0.01"
                   value={precoNormal}
                   onChange={(e) => setPrecoNormal(e.target.value)}
                 ></input>
@@ -276,6 +306,7 @@ export default function ManterProduto(props) {
                   id="precoOferta"
                   className="input_condicao"
                   type="number"
+                  step="0.01"
                   value={precoOferta}
                   onChange={(e) => setPrecoOferta(e.target.value)}
                 ></input>
@@ -295,7 +326,11 @@ export default function ManterProduto(props) {
             </div>
           </div>
           <div className="campo_produto4">
-            <button className="cancelar" onClick={() => props.Fechar(false)}>
+            <button
+              className="cancelar"
+              onClick={() => props.Fechar(false)}
+              type="button"
+            >
               Cancelar
             </button>
             <button className="confirmar" type="submit">

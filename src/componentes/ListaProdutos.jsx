@@ -2,28 +2,36 @@ import { useEffect, useState } from "react";
 import ManterProduto from "./ManterProduto";
 import ExcluirProduto from "./ExcluirProduto";
 import EstoqueProduto from "./EstoqueProduto";
-import Filtro from "./Filtro";
 import axios from "axios";
 
 export default function ListaProdutos() {
   const [visivel, setVisivel] = useState(0);
   const [idPerfume, setIdPerfume] = useState(0);
   const [lista, setLista] = useState([]);
-  const [atualizar, setAAtualizar] = useState(true);
+  const [filtro, setFiltro] = useState("");
+  const [atualizar, setAtualizar] = useState(true);
 
   function CarrergarListaProdutos() {
     axios
-      .get(`http://localhost:8080/perfume`)
+      .get(`http://localhost:8080/perfume`, {
+        params: { filtro: filtro },
+      })
       .then(function (response) {
         setLista(response.data);
       })
       .catch(function (erro) {
         alert("Não foi possível executar operação!");
-        console.log(erro);
       });
   }
 
   useEffect(CarrergarListaProdutos, [atualizar]);
+
+  function AtualizarLista(limpar) {
+    if (limpar) {
+      setFiltro("");
+    }
+    setAtualizar(!atualizar);
+  }
 
   let componente;
 
@@ -43,14 +51,10 @@ export default function ListaProdutos() {
     componente = <EstoqueProduto Fechar={Fechar} IdPerfume={idPerfume} />;
   }
 
-  if (visivel == 5) {
-    componente = <Filtro Fechar={Fechar} />;
-  }
-
   function Fechar(atualizar) {
     setVisivel(0);
     if (atualizar == true) {
-      setAAtualizar((prevStatus) => !prevStatus);
+      setAtualizar((prevStatus) => !prevStatus);
     }
   }
 
@@ -74,10 +78,6 @@ export default function ListaProdutos() {
     setVisivel(4);
   }
 
-  function Abrir5() {
-    setVisivel(5);
-  }
-
   const listaComponentes = lista.map(function (item) {
     return (
       <tr key={item.idPerfume}>
@@ -85,20 +85,28 @@ export default function ListaProdutos() {
         <td>{item.marca.nome}</td>
         <td>{item.tipo.tipo}</td>
         <td className="estoque">{item.estoque}</td>
-        <td className="preco">{item.precoNormal}</td>
+        <td className="preco">
+          {item.precoNormal.toLocaleString("pt-BR", {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+          })}
+        </td>
         <td>
           <div className="opcao_tabela">
             <img
               src="/svg/icone_alterar.svg"
               onClick={(e) => Abrir2(item.idPerfume)}
-            ></img>
-            <img
-              src="/svg/icone_excluir.svg"
-              onClick={(e) => Abrir3(item.idPerfume)}
+              title="Alterar"
             ></img>
             <img
               src="/svg/icone_estoque.svg"
               onClick={(e) => Abrir4(item.idPerfume)}
+              title="Mudar Estoque"
+            ></img>
+            <img
+              src="/svg/icone_excluir.svg"
+              onClick={(e) => Abrir3(item.idPerfume)}
+              title="Excluir"
             ></img>
           </div>
         </td>
@@ -113,10 +121,23 @@ export default function ListaProdutos() {
           <input
             type="text"
             placeholder=" Digite o texto para pesquisa..."
+            value={filtro}
+            onChange={(e) => setFiltro(e.target.value)}
           ></input>
-          <button>Pesquisar</button>
-          <button>Limpar</button>
-          <button onClick={Abrir5}>Filtros</button>
+          <button
+            onClick={() => {
+              AtualizarLista(false);
+            }}
+          >
+            Pesquisar
+          </button>
+          <button
+            onClick={() => {
+              AtualizarLista(true);
+            }}
+          >
+            Limpar
+          </button>
         </div>
         <div className="funcao2">
           <button onClick={Abrir1}>Adicionar</button>
