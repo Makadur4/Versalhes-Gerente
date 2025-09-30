@@ -1,18 +1,11 @@
-export default function Cabecalho(props) {
-  function Deslogar() {
-    props.setStatue(false);
-  }
-
-  let componente;
-
-  if (props.status == true) {
-    componente = (
-      <div className="sair" onClick={Deslogar}>
+export default function (props) {
+  const componente =
+    props.status != "" ? (
+      <div className="sair" onClick={() => props.guardarToken("")}>
         <img className="icone" src="/svg/icone_sair.svg" />
         <span>Sair</span>
       </div>
-    );
-  }
+    ) : null;
 
   return (
     <header>

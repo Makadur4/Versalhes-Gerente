@@ -1,4 +1,4 @@
-export default function Rodape() {
+export default function () {
   return (
     <footer>
       <div id="rodape"></div>

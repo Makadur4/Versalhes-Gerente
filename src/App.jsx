@@ -1,24 +1,25 @@
 import { useState } from "react";
+
 import "./App.css";
-import Cabecalho from "./componentes/Cabecalho";
-import ListaProdutos from "./componentes/ListaProdutos";
-import Login from "./componentes/Login";
-import Rodape from "./componentes/Rodape";
+
+import Cabecalho from "./components/cabecalho";
+import Login from "./components/login";
+import ListaPerfumes from "./components/lista-perfumes";
+import Rodape from "./components/rodape";
 
 function App() {
-  const [logado, setLogado] = useState(false);
+  const [token, setToken] = useState(sessionStorage.getItem("jwtToken") ?? "");
 
-  let componente;
-
-  if (logado == true) {
-    componente = <ListaProdutos />;
-  } else {
-    componente = <Login setStatue={setLogado} />;
+  function guardarToken(valor) {
+    sessionStorage.setItem("jwtToken", valor);
+    setToken(valor);
   }
+
+  const componente = token == "" ? <Login guardarToken={guardarToken} /> : <ListaPerfumes guardarToken={guardarToken} token={token} />;
 
   return (
     <>
-      <Cabecalho status={logado} setStatue={setLogado} />
+      <Cabecalho token={token} guardarToken={guardarToken} />
       {componente}
       <Rodape />
     </>
