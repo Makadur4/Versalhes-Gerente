@@ -24,7 +24,7 @@ export default function (props) {
 
       setLista(lista);
     } catch (e) {
-      if (e < 500) {
+      if (erro.codigo < 500) {
         alert("Acesso não autorizado. Por favor, faça o login novamente!");
 
         props.guardarToken("");
@@ -32,7 +32,7 @@ export default function (props) {
         return;
       }
 
-      alert("Não foi possível executar operação. Por favor, tente novamente mais tarde!");
+      alert(erro.obterMensagem());
     }
   }
 

@@ -14,10 +14,10 @@ export default function Login(props) {
       props.guardarToken(token);
       return;
     } catch (e) {
-      if (e < 500) {
+      if (erro.codigo < 500) {
         alert("Usuário ou senha inválido. Por favor, tente novamente!");
       } else {
-        alert("Não foi possível executar operação. Por favor, tente novamente mais tarde!");
+        alert(erro.obterMensagem());
       }
     }
   }

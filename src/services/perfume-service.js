@@ -1,4 +1,5 @@
 import backend from "./backend";
+import { ApiException } from "./api-exception";
 
 export async function incluirPerfume(token, nome, descricao, marcaId, tipoId, genero, especial, precoNormal, oferta, precoOferta, estoque) {
   try {
@@ -28,8 +29,8 @@ export async function incluirPerfume(token, nome, descricao, marcaId, tipoId, ge
     const response = await backend.post("perfume/incluir-perfume", dados, configuracoes);
 
     return response.data.id;
-  } catch (error) {
-    throw error.response?.status;
+  } catch (erro) {
+    throw new ApiException(erro.response?.status);
   }
 }
 
@@ -46,8 +47,8 @@ export async function obterPerfumes(token, nome) {
     const response = await backend.get("perfume/obter-perfumes-cadastro", configuracoes);
 
     return response.data;
-  } catch (error) {
-    throw error.response?.status;
+  } catch (erro) {
+    throw new ApiException(erro.response?.status);
   }
 }
 
@@ -56,8 +57,8 @@ export async function obterPerfume(id) {
     const response = await backend.get(`perfume/obter-perfume/${id}`);
 
     return response.data;
-  } catch (error) {
-    throw error.response?.status;
+  } catch (erro) {
+    throw new ApiException(erro.response?.status);
   }
 }
 
@@ -87,8 +88,8 @@ export async function alterarPerfume(token, id, nome, descricao, marcaId, tipoId
     };
 
     await backend.put(`perfume/alterar-perfume/${id}`, dados, configuracoes);
-  } catch (error) {
-    throw error.response?.status;
+  } catch (erro) {
+    throw new ApiException(erro.response?.status);
   }
 }
 
@@ -105,8 +106,8 @@ export async function alterarEstoque(token, id, estoque) {
     };
 
     await backend.patch(`perfume/alterar-estoque/${id}`, dados, configuracoes);
-  } catch (error) {
-    throw error.response?.status;
+  } catch (erro) {
+    throw new ApiException(erro.response?.status);
   }
 }
 
@@ -118,8 +119,8 @@ export async function excluirPerfume(token, id) {
       },
     };
     await backend.delete(`perfume/excluir-perfume/${id}`, configuracoes);
-  } catch (error) {
-    throw error.response?.status;
+  } catch (erro) {
+    throw new ApiException(erro.response?.status);
   }
 }
 
@@ -138,7 +139,7 @@ export async function incluirImagem(token, perfumeId, arquivo) {
     formulario.append("arquivo", arquivo);
 
     await backend.post("perfume/incluir-imagem", formulario, configuracoes);
-  } catch (error) {
-    throw error.response?.status;
+  } catch (erro) {
+    throw new ApiException(erro.response?.status);
   }
 }

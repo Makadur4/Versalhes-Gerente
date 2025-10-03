@@ -9,10 +9,10 @@ export default function (props) {
 
       props.fecharModal(true);
     } catch (e) {
-      if (e == 400) {
-        alert("Não é possível exlcuri este perfume. Por favor, verifique se o perfume não faz parte de um pedido e tente novamente!");
+      if (erro.codigo == 400) {
+        alert("Não é possível excluir este perfume. Por favor, verifique se o perfume não faz parte de um pedido e tente novamente!");
       } else {
-        alert("Não foi possível executar operação. Por favor, tente novamente mais tarde!");
+        alert(erro.obterMensagem());
       }
     }
   }

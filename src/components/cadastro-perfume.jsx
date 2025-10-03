@@ -64,7 +64,7 @@ export default function (props) {
         setUrlImagem(`${configuracao.urlApi}perfume/obter-imagem/${props.perfumeId}`);
       }
     } catch (e) {
-      alert("Não foi possível executar operação. Por favor, tente novamente mais tarde!");
+      alert(erro.obterMensagem());
 
       props.fecharModal(true);
     }
@@ -97,10 +97,10 @@ export default function (props) {
 
       props.fecharModal(true);
     } catch (e) {
-      if (e == 400) {
+      if (erro.codigo == 400) {
         alert("Os dados inválidos. Por favor, verifique os dados informados e tente novamente!");
       } else {
-        alert("Não foi possível executar operação. Por favor, tente novamente mais tarde!");
+        alert(erro.obterMensagem());
       }
     }
   }
