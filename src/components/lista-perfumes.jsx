@@ -23,7 +23,7 @@ export default function (props) {
       const lista = await obterPerfumes(props.token, filtro);
 
       setLista(lista);
-    } catch (e) {
+    } catch (erro) {
       if (erro.codigo < 500) {
         alert("Acesso não autorizado. Por favor, faça o login novamente!");
 
@@ -72,13 +72,31 @@ export default function (props) {
 
   switch (modal) {
     case 1:
-      componente = <Cadastro token={props.token} fecharModal={fecharModal} perfumeId={perfumeId} />;
+      componente = (
+        <Cadastro
+          token={props.token}
+          fecharModal={fecharModal}
+          perfumeId={perfumeId}
+        />
+      );
       break;
     case 2:
-      componente = <Estoque token={props.token} fecharModal={fecharModal} perfumeId={perfumeId} />;
+      componente = (
+        <Estoque
+          token={props.token}
+          fecharModal={fecharModal}
+          perfumeId={perfumeId}
+        />
+      );
       break;
     case 3:
-      componente = <Excluir token={props.token} fecharModal={fecharModal} perfumeId={perfumeId} />;
+      componente = (
+        <Excluir
+          token={props.token}
+          fecharModal={fecharModal}
+          perfumeId={perfumeId}
+        />
+      );
       break;
   }
 
@@ -97,9 +115,21 @@ export default function (props) {
         </td>
         <td>
           <div className="opcao_tabela">
-            <img src="/svg/icone_alterar.svg" onClick={(e) => abrirAlteracao(item.id)} title="Alterar"></img>
-            <img src="/svg/icone_estoque.svg" onClick={(e) => abrirEstoque(item.id)} title="Mudar Estoque"></img>
-            <img src="/svg/icone_excluir.svg" onClick={(e) => abrirExclusao(item.id)} title="Excluir"></img>
+            <img
+              src="/svg/icone_alterar.svg"
+              onClick={(e) => abrirAlteracao(item.id)}
+              title="Alterar"
+            ></img>
+            <img
+              src="/svg/icone_estoque.svg"
+              onClick={(e) => abrirEstoque(item.id)}
+              title="Mudar Estoque"
+            ></img>
+            <img
+              src="/svg/icone_excluir.svg"
+              onClick={(e) => abrirExclusao(item.id)}
+              title="Excluir"
+            ></img>
           </div>
         </td>
       </tr>
@@ -110,7 +140,12 @@ export default function (props) {
     <main>
       <div className="funcao_principal">
         <div className="funcao1">
-          <input type="text" placeholder=" Digite o texto para pesquisa..." value={filtro} onChange={(e) => setFiltro(e.target.value)}></input>
+          <input
+            type="text"
+            placeholder=" Digite o texto para pesquisa..."
+            value={filtro}
+            onChange={(e) => setFiltro(e.target.value)}
+          ></input>
           <button
             onClick={() => {
               atualizarLista(false);

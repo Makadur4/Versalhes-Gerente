@@ -10,7 +10,7 @@ export default function (props) {
       const perfume = await obterPerfume(props.perfumeId);
 
       setEstoque(perfume.estoque);
-    } catch (e) {
+    } catch (erro) {
       alert(erro.obterMensagem());
 
       props.fecharModal(true);
@@ -28,9 +28,11 @@ export default function (props) {
       await alterarEstoque(props.token, props.perfumeId, estoque);
 
       props.fecharModal(true);
-    } catch (e) {
+    } catch (erro) {
       if (erro.codigo == 400) {
-        alert("Os dados inválidos. Por favor, verifique os dados informados e tente novamente!");
+        alert(
+          "Os dados inválidos. Por favor, verifique os dados informados e tente novamente!"
+        );
       } else {
         alert(erro.obterMensagem());
       }
@@ -48,10 +50,20 @@ export default function (props) {
             <label className="label_produto2" htmlFor="estoque">
               Estoque
             </label>
-            <input id="estoque" className="input_estoque" type="number" value={estoque} onChange={(e) => setEstoque(e.target.value)}></input>
+            <input
+              id="estoque"
+              className="input_estoque"
+              type="number"
+              value={estoque}
+              onChange={(e) => setEstoque(e.target.value)}
+            ></input>
           </div>
           <div className="campo_estoque">
-            <button type="button" className="cancelar" onClick={() => props.fecharModal(false)}>
+            <button
+              type="button"
+              className="cancelar"
+              onClick={() => props.fecharModal(false)}
+            >
               Cancelar
             </button>
             <button className="confirmar" type="submit">

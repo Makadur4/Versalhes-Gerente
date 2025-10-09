@@ -8,9 +8,11 @@ export default function (props) {
       await excluirPerfume(props.token, props.perfumeId);
 
       props.fecharModal(true);
-    } catch (e) {
+    } catch (erro) {
       if (erro.codigo == 400) {
-        alert("Não é possível excluir este perfume. Por favor, verifique se o perfume não faz parte de um pedido e tente novamente!");
+        alert(
+          "Não é possível excluir este perfume. Por favor, verifique se o perfume não faz parte de um pedido ou avaliação e tente novamente!"
+        );
       } else {
         alert(erro.obterMensagem());
       }
@@ -27,7 +29,11 @@ export default function (props) {
             <p>Deseja realmente excluir o perfume?</p>
           </div>
           <div className="campo_excluir">
-            <button className="cancelar" type="button" onClick={() => props.fecharModal(false)}>
+            <button
+              className="cancelar"
+              type="button"
+              onClick={() => props.fecharModal(false)}
+            >
               Cancelar
             </button>
             <button className="confirmar" type="submit">

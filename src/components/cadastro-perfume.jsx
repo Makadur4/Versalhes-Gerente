@@ -3,7 +3,12 @@ import React, { useEffect, useState } from "react";
 import configuracao from "../config";
 
 import { obterMarcas, obterTipos } from "../services/apoio-service";
-import { incluirPerfume, incluirImagem, obterPerfume, alterarPerfume } from "../services/perfume-service";
+import {
+  incluirPerfume,
+  incluirImagem,
+  obterPerfume,
+  alterarPerfume,
+} from "../services/perfume-service";
 
 import Imagem from "./imagem";
 
@@ -41,6 +46,13 @@ export default function (props) {
       } else {
         const perfume = await obterPerfume(props.perfumeId);
 
+        console.log(
+          perfume.precoNormal.toLocaleString("en-US", {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+          })
+        );
+
         setNome(perfume.nome);
         setDescricao(perfume.descricao);
         setMarca(perfume.marca.id);
@@ -48,22 +60,28 @@ export default function (props) {
         setGenero(perfume.genero);
         setEspecial(perfume.especial);
         setPrecoNormal(
-          perfume.precoNormal.toLocaleString("en-US", {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2,
-          })
+          perfume.precoNormal
+            .toLocaleString("en-US", {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+            })
+            .replace(",", "")
         );
         setOferta(perfume.oferta);
         setPrecoOferta(
-          perfume.precoOferta.toLocaleString("en-US", {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2,
-          })
+          perfume.precoOferta
+            .toLocaleString("en-US", {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+            })
+            .replace(",", "")
         );
         setEstoque(perfume.estoque);
-        setUrlImagem(`${configuracao.urlApi}perfume/obter-imagem/${props.perfumeId}`);
+        setUrlImagem(
+          `${configuracao.urlApi}perfume/obter-imagem/${props.perfumeId}`
+        );
       }
-    } catch (e) {
+    } catch (erro) {
       alert(erro.obterMensagem());
 
       props.fecharModal(true);
@@ -86,9 +104,34 @@ export default function (props) {
 
     try {
       if ((perfumeId ?? 0) == 0) {
-        perfumeId = await incluirPerfume(props.token, nome, descricao, marca, tipo, genero, especial, precoNormal, oferta, precoOferta, estoque);
+        perfumeId = await incluirPerfume(
+          props.token,
+          nome,
+          descricao,
+          marca,
+          tipo,
+          genero,
+          especial,
+          precoNormal,
+          oferta,
+          precoOferta,
+          estoque
+        );
       } else {
-        await alterarPerfume(props.token, perfumeId, nome, descricao, marca, tipo, genero, especial, precoNormal, oferta, precoOferta, estoque);
+        await alterarPerfume(
+          props.token,
+          perfumeId,
+          nome,
+          descricao,
+          marca,
+          tipo,
+          genero,
+          especial,
+          precoNormal,
+          oferta,
+          precoOferta,
+          estoque
+        );
       }
 
       if (arquivo != null) {
@@ -96,9 +139,11 @@ export default function (props) {
       }
 
       props.fecharModal(true);
-    } catch (e) {
+    } catch (erro) {
       if (erro.codigo == 400) {
-        alert("Os dados inválidos. Por favor, verifique os dados informados e tente novamente!");
+        alert(
+          "Os dados inválidos. Por favor, verifique os dados informados e tente novamente!"
+        );
       } else {
         alert(erro.obterMensagem());
       }
@@ -129,36 +174,88 @@ export default function (props) {
         <form onSubmit={confirmarOperaco}>
           <div className="campo_produto">
             <div className="quadro_foto">
-              <Imagem urlImagem={urlImagem} setUrlImagem={setUrlImagem} setArquivo={setArquivo} />
+              <Imagem
+                urlImagem={urlImagem}
+                setUrlImagem={setUrlImagem}
+                setArquivo={setArquivo}
+              />
             </div>
             <div className="cadastro_produto">
               <label className="label_produto" htmlFor="nome">
                 Nome do Produto
               </label>
-              <input id="nome" className="input_nome" type="text" value={nome} onChange={(e) => setNome(e.target.value)} required></input>
+              <input
+                id="nome"
+                className="input_nome"
+                type="text"
+                value={nome}
+                onChange={(e) => setNome(e.target.value)}
+                required
+              ></input>
               <label className="label_produto" htmlFor="marca">
                 Marca
               </label>
-              <select id="marca" className="select" value={marca} onChange={(e) => setMarca(e.target.value)} required>
+              <select
+                id="marca"
+                className="select"
+                value={marca}
+                onChange={(e) => setMarca(e.target.value)}
+                required
+              >
                 {opcoesMarcas}
               </select>
               <label className="genero">Gênero:</label>
-              <input id="genero_masculino" name="genero" type="radio" checked={genero == "M"} onChange={() => setGenero("M")}></input>
+              <input
+                id="genero_masculino"
+                name="genero"
+                type="radio"
+                checked={genero == "M"}
+                onChange={() => setGenero("M")}
+              ></input>
               <label htmlFor="genero_masculino">Masculino</label>
-              <input id="genero_feminino" name="genero" type="radio" checked={genero == "F"} onChange={() => setGenero("F")}></input>
+              <input
+                id="genero_feminino"
+                name="genero"
+                type="radio"
+                checked={genero == "F"}
+                onChange={() => setGenero("F")}
+              ></input>
               <label htmlFor="genero_feminino">Feminino</label>
-              <input id="genero_unissex" name="genero" type="radio" checked={genero == "U"} onChange={() => setGenero("U")}></input>
+              <input
+                id="genero_unissex"
+                name="genero"
+                type="radio"
+                checked={genero == "U"}
+                onChange={() => setGenero("U")}
+              ></input>
               <label htmlFor="genero_unissex">Unissex</label>
               <div>
                 <label className="label_produto" htmlFor="tipo">
                   Tipo
                 </label>
-                <select className="select" id="tipo" value={tipo} onChange={(e) => setTipo(e.target.value)}>
+                <select
+                  className="select"
+                  id="tipo"
+                  value={tipo}
+                  onChange={(e) => setTipo(e.target.value)}
+                >
                   {opcoesTipos}
                 </select>
-                <input id="especial" type="checkbox" className="checkbox" checked={especial == true} onChange={(e) => setEspecial(e.target.checked)}></input>
+                <input
+                  id="especial"
+                  type="checkbox"
+                  className="checkbox"
+                  checked={especial == true}
+                  onChange={(e) => setEspecial(e.target.checked)}
+                ></input>
                 <label htmlFor="especial">Especial</label>
-                <input id="oferta" type="checkbox" className="checkbox" checked={oferta == true} onChange={(e) => setOferta(e.target.checked)}></input>
+                <input
+                  id="oferta"
+                  type="checkbox"
+                  className="checkbox"
+                  checked={oferta == true}
+                  onChange={(e) => setOferta(e.target.checked)}
+                ></input>
                 <label htmlFor="oferta">Oferta</label>
               </div>
             </div>
@@ -167,7 +264,14 @@ export default function (props) {
             <label className="descricao" htmlFor="descricao">
               Descrição
             </label>
-            <textarea className="area_descricao" id="descricao" value={descricao} onChange={(e) => setDescricao(e.target.value)} required></textarea>
+            <textarea
+              className="area_descricao"
+              id="descricao"
+              maxLength={1000}
+              value={descricao}
+              onChange={(e) => setDescricao(e.target.value)}
+              required
+            ></textarea>
           </div>
           <div className="campo_produto2">
             <div className="campo_produto3">
@@ -175,24 +279,51 @@ export default function (props) {
                 <label className="label_produto2" htmlFor="precoNormal">
                   Preço Normal
                 </label>
-                <input id="precoNormal" className="input_condicao" type="number" step="0.01" value={precoNormal} onChange={(e) => setPrecoNormal(e.target.value)} required></input>
+                <input
+                  id="precoNormal"
+                  className="input_condicao"
+                  type="number"
+                  step="0.01"
+                  value={precoNormal}
+                  onChange={(e) => setPrecoNormal(e.target.value)}
+                  required
+                ></input>
               </div>
               <div>
                 <label className="label_produto2" htmlFor="precoOferta">
                   Preço em Oferta
                 </label>
-                <input id="precoOferta" className="input_condicao" type="number" step="0.01" value={precoOferta} onChange={(e) => setPrecoOferta(e.target.value)} required></input>
+                <input
+                  id="precoOferta"
+                  className="input_condicao"
+                  type="number"
+                  step="0.01"
+                  value={precoOferta}
+                  onChange={(e) => setPrecoOferta(e.target.value)}
+                  required
+                ></input>
               </div>
               <div>
                 <label className="label_produto2" htmlFor="estoque">
                   Estoque
                 </label>
-                <input id="estoque" className="input_condicao" type="number" value={estoque} onChange={(e) => setEstoque(e.target.value)} required></input>
+                <input
+                  id="estoque"
+                  className="input_condicao"
+                  type="number"
+                  value={estoque}
+                  onChange={(e) => setEstoque(e.target.value)}
+                  required
+                ></input>
               </div>
             </div>
           </div>
           <div className="campo_produto4">
-            <button className="cancelar" onClick={() => props.fecharModal(false)} type="button">
+            <button
+              className="cancelar"
+              onClick={() => props.fecharModal(false)}
+              type="button"
+            >
               Cancelar
             </button>
             <button className="confirmar" type="submit">

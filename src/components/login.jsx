@@ -13,7 +13,7 @@ export default function Login(props) {
       const token = await validarUsuario(login, senha);
       props.guardarToken(token);
       return;
-    } catch (e) {
+    } catch (erro) {
       if (erro.codigo < 500) {
         alert("Usuário ou senha inválido. Por favor, tente novamente!");
       } else {
@@ -32,11 +32,25 @@ export default function Login(props) {
           <label className="label" htmlFor="login">
             Login:
           </label>
-          <input type="text" className="input" id="login" value={login} onChange={(e) => setLogin(e.target.value)} required={true}></input>
+          <input
+            type="text"
+            className="input"
+            id="login"
+            value={login}
+            onChange={(e) => setLogin(e.target.value)}
+            required={true}
+          ></input>
           <label className="label" htmlFor="senha">
             Senha:
           </label>
-          <input type="password" className="input2" id="senha" value={senha} onChange={(e) => setSenha(e.target.value)} required={true}></input>
+          <input
+            type="password"
+            className="input2"
+            id="senha"
+            value={senha}
+            onChange={(e) => setSenha(e.target.value)}
+            required={true}
+          ></input>
         </div>
         <div className="botao_continuar">
           <button type="submit">Continuar</button>
